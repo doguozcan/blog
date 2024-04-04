@@ -48,4 +48,24 @@ const createPost = asyncHandler(async (req, res, next) => {
   }
 })
 
-module.exports = { createPost }
+const getPost = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params
+
+  if (!postId) {
+    let error = new Error('Post id is required.')
+    error.statusCode(400)
+    return next(error)
+  }
+
+  const post = await Post.findById(postId).populate('authorId')
+
+  if (!post) {
+    let error = new Error('Post not found')
+    error.statusCode = 404
+    return next(error)
+  }
+
+  return res.status(200).json(post)
+})
+
+module.exports = { createPost, getPost }
