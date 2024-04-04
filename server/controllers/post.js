@@ -48,6 +48,18 @@ const createPost = asyncHandler(async (req, res, next) => {
   }
 })
 
+const getPosts = asyncHandler(async (_, res, next) => {
+  const posts = await Post.find({}).populate('authorId')
+
+  if (posts.length === 0) {
+    let error = new Error('No posts found')
+    error.statusCode = 404
+    return next(error)
+  }
+
+  return res.status(200).json(posts)
+})
+
 const getPost = asyncHandler(async (req, res, next) => {
   const { postId } = req.params
 
@@ -68,4 +80,4 @@ const getPost = asyncHandler(async (req, res, next) => {
   return res.status(200).json(post)
 })
 
-module.exports = { createPost, getPost }
+module.exports = { createPost, getPosts, getPost }
