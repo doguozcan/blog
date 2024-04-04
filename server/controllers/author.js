@@ -15,7 +15,9 @@ const createAuthor = asyncHandler(async (req, res, next) => {
   if (author) {
     return res
       .status(201)
-      .json({ message: `Author ${name} created successfully!` })
+      .json({
+        message: `Author ${name} with id ${author._id} created successfully!`,
+      })
   }
 })
 
