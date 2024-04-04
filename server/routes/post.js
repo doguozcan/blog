@@ -6,6 +6,7 @@ const {
   getPosts,
   getPost,
   updatePost,
+  deletePost,
 } = require('../controllers/post')
 
 router
@@ -13,5 +14,6 @@ router
   .get('/', getPosts)
   .get('/:postId', getPost)
   .patch('/:postId', updatePost)
+  .delete('/:postId', deletePost)
 
 module.exports = router

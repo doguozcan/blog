@@ -65,7 +65,7 @@ const getPost = asyncHandler(async (req, res, next) => {
 
   if (!postId) {
     let error = new Error('Post id is required.')
-    error.statusCode(400)
+    error.statusCode = 400
     return next(error)
   }
 
@@ -91,7 +91,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
 
   if (!postId) {
     let error = new Error('Post id is required.')
-    error.statusCode(400)
+    error.statusCode = 400
     return next(error)
   }
 
@@ -110,6 +110,20 @@ const updatePost = asyncHandler(async (req, res, next) => {
   }
 
   const { title, content, authorId } = req.body
+
+  if (!mongoose.Types.ObjectId.isValid(authorId)) {
+    let error = new Error('Author id format is invalid.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  const author = await Author.findById(authorId)
+
+  if (!author) {
+    let error = new Error('Author not found in the database.')
+    error.statusCode = 404
+    return next(error)
+  }
 
   if (title) {
     post.title = title
@@ -130,4 +144,32 @@ const updatePost = asyncHandler(async (req, res, next) => {
     .json({ message: `Post with id ${updatedPost._id} updated successfully!` })
 })
 
-module.exports = { createPost, getPosts, getPost, updatePost }
+const deletePost = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params
+
+  if (!postId) {
+    let error = new Error('Post id is required.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    let error = new Error('Post id format is invalid.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  const deletedPost = await Post.findByIdAndDelete(postId)
+
+  if (!deletedPost) {
+    let error = new Error('Post not found so it cannot be deleted.')
+    error.statusCode = 404
+    return next(error)
+  }
+
+  return res
+    .status(200)
+    .json({ message: `Post with id ${deletedPost._id} deleted successfully!` })
+})
+
+module.exports = { createPost, getPosts, getPost, updatePost, deletePost }
