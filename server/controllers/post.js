@@ -69,10 +69,16 @@ const getPost = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    let error = new Error('Post id format is invalid.')
+    error.statusCode = 400
+    return next(error)
+  }
+
   const post = await Post.findById(postId).populate('authorId')
 
   if (!post) {
-    let error = new Error('Post not found')
+    let error = new Error('Post not found.')
     error.statusCode = 404
     return next(error)
   }
@@ -80,4 +86,48 @@ const getPost = asyncHandler(async (req, res, next) => {
   return res.status(200).json(post)
 })
 
-module.exports = { createPost, getPosts, getPost }
+const updatePost = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params
+
+  if (!postId) {
+    let error = new Error('Post id is required.')
+    error.statusCode(400)
+    return next(error)
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    let error = new Error('Post id format is invalid.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  const post = await Post.findById(postId)
+
+  if (!post) {
+    let error = new Error('Post not found.')
+    error.statusCode = 404
+    return next(error)
+  }
+
+  const { title, content, authorId } = req.body
+
+  if (title) {
+    post.title = title
+  }
+
+  if (content) {
+    post.content = content
+  }
+
+  if (authorId) {
+    post.authorId = authorId
+  }
+
+  const updatedPost = await post.save()
+
+  res
+    .status(200)
+    .json({ message: `Post with id ${updatedPost._id} updated successfully!` })
+})
+
+module.exports = { createPost, getPosts, getPost, updatePost }
