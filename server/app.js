@@ -3,8 +3,13 @@ const express = require('express')
 const app = express()
 const port = 3000
 const mongoose = require('mongoose')
+const authorRoute = require('./routes/author')
+const errorHandler = require('./middlewares/errorHandler')
 
 app.use(express.json())
+
+app.use('/author', authorRoute)
+app.use(errorHandler)
 
 const start = async () => {
   try {
