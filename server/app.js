@@ -4,11 +4,13 @@ const app = express()
 const port = 3000
 const mongoose = require('mongoose')
 const authorRoute = require('./routes/author')
+const postRoute = require('./routes/post')
 const errorHandler = require('./middlewares/errorHandler')
 
 app.use(express.json())
 
 app.use('/author', authorRoute)
+app.use('/post', postRoute)
 app.use(errorHandler)
 
 const start = async () => {
