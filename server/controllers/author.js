@@ -67,6 +67,45 @@ const getAuthorPosts = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ author, posts })
 })
 
+const updateAuthor = asyncHandler(async (req, res, next) => {
+  const { authorId } = req.params
+
+  if (!authorId) {
+    let error = new Error('Author id is required.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(authorId)) {
+    let error = new Error('Author id format is invalid.')
+    error.statusCode = 400
+    return next(error)
+  }
+
+  const author = await Author.findById(authorId)
+
+  if (!author) {
+    let error = new Error('Author not found.')
+    error.statusCode = 404
+    next(error)
+  }
+
+  const { name } = req.body
+
+  if (!name) {
+    let error = new Error('No name entered.')
+    error.statusCode = 400
+    next(error)
+  }
+
+  author.name = name
+  await author.save()
+
+  return res
+    .status(200)
+    .json({ message: `Author with id ${author._id} updated successfully!` })
+})
+
 const deleteAuthor = asyncHandler(async (req, res, next) => {
   const { authorId } = req.params
 
@@ -101,4 +140,10 @@ const deleteAuthor = asyncHandler(async (req, res, next) => {
     .json({ message: 'Author and all related posts are deleted.' })
 })
 
-module.exports = { createAuthor, getAuthors, getAuthorPosts, deleteAuthor }
+module.exports = {
+  createAuthor,
+  getAuthors,
+  getAuthorPosts,
+  updateAuthor,
+  deleteAuthor,
+}
