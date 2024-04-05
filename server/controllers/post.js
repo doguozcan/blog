@@ -39,7 +39,7 @@ const createPost = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
-  const post = await Post.create({ title, content, authorId })
+  const post = await Post.create({ title, content, author: authorId })
 
   if (post) {
     return res
@@ -49,7 +49,7 @@ const createPost = asyncHandler(async (req, res, next) => {
 })
 
 const getPosts = asyncHandler(async (_, res, next) => {
-  const posts = await Post.find({}).populate('authorId')
+  const posts = await Post.find({}).populate('author')
 
   if (posts.length === 0) {
     let error = new Error('No posts found.')
@@ -75,7 +75,7 @@ const getPost = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
-  const post = await Post.findById(postId).populate('authorId')
+  const post = await Post.findById(postId).populate('author')
 
   if (!post) {
     let error = new Error('Post not found.')
@@ -134,7 +134,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
   }
 
   if (authorId) {
-    post.authorId = authorId
+    post.author = authorId
   }
 
   const updatedPost = await post.save()

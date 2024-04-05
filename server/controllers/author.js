@@ -130,7 +130,7 @@ const deleteAuthor = asyncHandler(async (req, res, next) => {
   }
 
   // delete posts related with the author
-  await Post.deleteMany({ authorId: author._id })
+  await Post.deleteMany({ author: author._id })
 
   // delete the author
   await Author.findOneAndDelete({ _id: authorId })
