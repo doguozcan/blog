@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 
 const Layout = () => {
   return (
-    <div>
+    <div className="font-montserrat">
       <Navbar />
       <Outlet />
     </div>
