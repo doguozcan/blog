@@ -52,7 +52,7 @@ const getPosts = asyncHandler(async (_, res, next) => {
   const posts = await Post.find({}).populate('authorId')
 
   if (posts.length === 0) {
-    let error = new Error('No posts found')
+    let error = new Error('No posts found.')
     error.statusCode = 404
     return next(error)
   }
