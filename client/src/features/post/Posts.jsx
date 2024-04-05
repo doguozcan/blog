@@ -1,4 +1,5 @@
 import { useGetPostsQuery } from '../api/apiSlice'
+import PostExcerpt from '../post/PostExcerpt'
 
 const Posts = () => {
   const {
@@ -16,17 +17,17 @@ const Posts = () => {
   }
 
   if (isSuccess) {
-    content = posts.map((post) => (
-      <div key={post._id}>
-        <h2>{post.title}</h2>
-        <p>{post.content}</p>
-        <p>{post.author.name}</p>
+    content = (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+        {posts.map((post) => (
+          <PostExcerpt key={post._id} post={post} />
+        ))}
       </div>
-    ))
+    )
   }
 
   if (isError) {
-    content = <p>{error?.data?.message || 'An error occurred'}</p>
+    content = <p>{error?.data?.message || 'An error occurred.'}</p>
   }
 
   return <div>{content}</div>
