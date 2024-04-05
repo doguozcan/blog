@@ -1,5 +1,7 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
+const corsOptions = require('./util/corsOptions')
 const app = express()
 const port = 3000
 const mongoose = require('mongoose')
@@ -7,6 +9,7 @@ const authorRoute = require('./routes/author')
 const postRoute = require('./routes/post')
 const errorHandler = require('./middlewares/errorHandler')
 
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.use('/author', authorRoute)
