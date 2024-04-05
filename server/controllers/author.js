@@ -13,12 +13,22 @@ const createAuthor = asyncHandler(async (req, res, next) => {
   const author = await Author.create({ name })
 
   if (author) {
-    return res
-      .status(201)
-      .json({
-        message: `Author ${name} with id ${author._id} created successfully!`,
-      })
+    return res.status(201).json({
+      message: `Author ${name} with id ${author._id} created successfully!`,
+    })
   }
 })
 
-module.exports = { createAuthor }
+const getAuthors = asyncHandler(async (_, res, next) => {
+  const authors = await Author.find({})
+
+  if (authors.length === 0) {
+    let error = new Error('No authors found')
+    error.statusCode = 404
+    return next(error)
+  }
+
+  return res.status(200).json(authors)
+})
+
+module.exports = { createAuthor, getAuthors }
