@@ -15,8 +15,11 @@ const AddPost = () => {
   const canSave = name && !isLoading
 
   return (
-    <div className="flex justify-center">
-      <form className="flex flex-col w-4/5 max-w-lg" onSubmit={handleSubmit}>
+    <div className="flex justify-center m-2">
+      <form
+        className="flex flex-col w-4/5 max-w-lg gap-2"
+        onSubmit={handleSubmit}
+      >
         <label htmlFor="name" className="text-lg">
           Name
         </label>

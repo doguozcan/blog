@@ -35,8 +35,11 @@ const AddPost = () => {
   }
 
   return (
-    <div className="flex justify-center mb-5">
-      <form className="flex flex-col w-4/5 max-w-lg" onSubmit={handleSubmit}>
+    <div className="flex justify-center mb-5 m-2">
+      <form
+        className="flex flex-col w-4/5 max-w-lg gap-2"
+        onSubmit={handleSubmit}
+      >
         <label htmlFor="title" className="text-lg">
           Title
         </label>
@@ -47,7 +50,7 @@ const AddPost = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           disabled={isLoading}
-        ></input>
+        />
         <label htmlFor="content" className="text-lg">
           Content
         </label>
