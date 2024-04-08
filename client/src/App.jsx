@@ -4,6 +4,7 @@ import Posts from './features/post/Posts'
 import Post from './features/post/Post'
 import AddPost from './features/post/AddPost'
 import Authors from './features/author/Authors'
+import Author from './features/author/Author'
 import AddAuthor from './features/author/AddAuthor'
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           </Route>
           <Route path="author">
             <Route index element={<Authors />} />
+            <Route path=":authorId" element={<Author />} />
             <Route path="add-author" element={<AddAuthor />} />
           </Route>
         </Route>
