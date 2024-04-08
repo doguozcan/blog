@@ -24,6 +24,8 @@ const AddPost = () => {
     setAuthorId('')
   }
 
+  const canSave = title && content && authorId && !isLoading
+
   if (authorsLoading) {
     return <p>Authors loading...</p>
   }
@@ -44,6 +46,7 @@ const AddPost = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          disabled={isLoading}
         ></input>
         <label htmlFor="content" className="text-lg">
           Content
@@ -54,6 +57,7 @@ const AddPost = () => {
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          disabled={isLoading}
         ></textarea>
         <label htmlFor="author" className="text-lg">
           Author
@@ -62,6 +66,7 @@ const AddPost = () => {
           className="p-2 rounded outline-none mb-5 input input-bordered input-secondary"
           value={authorId}
           onChange={(e) => setAuthorId(e.target.value)}
+          disabled={isLoading}
         >
           <option></option>
           {authors.map((author) => (
@@ -70,7 +75,12 @@ const AddPost = () => {
             </option>
           ))}
         </select>
-        <button className="btn btn-outline btn-accent btn-sm mb-2">Send</button>
+        <button
+          className="btn btn-outline btn-accent btn-sm mb-2"
+          disabled={!canSave}
+        >
+          Send
+        </button>
       </form>
     </div>
   )
