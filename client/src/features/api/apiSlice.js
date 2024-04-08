@@ -13,6 +13,7 @@ export const apiSlice = createApi({
       providesTags: ['Author'],
     }),
     getPost: builder.query({
+      providesTags: ['Post'],
       query: (postId) => `post/${postId}`,
     }),
     addPost: builder.mutation({
@@ -37,6 +38,7 @@ export const apiSlice = createApi({
         method: 'PATCH',
         body: post,
       }),
+      invalidatesTags: ['Post'],
     }),
     deletePost: builder.mutation({
       query: (postId) => ({

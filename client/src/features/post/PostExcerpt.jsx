@@ -10,7 +10,7 @@ const truncateString = (str) => {
 
 const PostExcerpt = ({ post }) => {
   return (
-    <div className="border-2 border-accent p-3 rounded-lg flex flex-col justify-between">
+    <div className="border border-accent p-3 rounded-lg flex flex-col justify-between">
       <h2 className="text-xl mb-1">{post.title}</h2>
       <p className="mb-2">{truncateString(post.content)}</p>
       <p className="text-sm mb-3">{post.author.name}</p>

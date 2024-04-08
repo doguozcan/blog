@@ -87,69 +87,69 @@ const Post = () => {
 
   if (isSuccess) {
     content = (
-      <div className="border-2 border-secondary p-3 m-2 rounded-lg flex flex-col justify-between">
-        <h2 className="text-xl mb-1">{post.title}</h2>
-        <p className="mb-2">{post.content}</p>
-        <p className="text-sm mb-3">{post.author.name}</p>
-        <button
-          className="btn btn-warning"
-          onClick={handleDelete}
-          disabled={deleteIsLoading}
-        >
-          Delete post
-        </button>
-        <div className="flex flex-col items-center text-center p-2 my-2 rounded-sm">
-          <h2 className="text-lg">Edit the post</h2>
-          <form
-            className="flex flex-col w-4/5 max-w-lg gap-2"
-            onSubmit={handleEdit}
+      <div className="flex flex-col items-center m-5">
+        <div className="flex flex-col gap-2 items-center w-4/5 max-w-lg">
+          <h2 className="text-xl mb-1">{post.title}</h2>
+          <p className="mb-2">{post.content}</p>
+          <p className="text-sm mb-3">{post.author.name}</p>
+          <button
+            className="btn bg-red-500 hover:bg-red-800 btn-xs mb-2"
+            onClick={handleDelete}
+            disabled={deleteIsLoading}
           >
-            <label htmlFor="title" className="text-lg">
-              Title
-            </label>
-            <input
-              className="p-2 rounded outline-none input input-bordered input-secondary"
-              id="title"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              disabled={isLoading}
-            />
-            <label htmlFor="content" className="text-lg">
-              Content
-            </label>
-            <textarea
-              className="p-2 rounded outline-none input input-bordered input-secondary"
-              id="content"
-              type="text"
-              value={postContent}
-              onChange={(e) => setContent(e.target.value)}
-              disabled={isLoading}
-            ></textarea>
-            <label htmlFor="author" className="text-lg">
-              Author
-            </label>
-            <select
-              className="p-2 rounded outline-none mb-5 input input-bordered input-secondary"
-              value={authorId}
-              onChange={(e) => setAuthorId(e.target.value)}
-              disabled={isLoading}
-            >
-              <option></option>
-              {authors?.map((author) => (
-                <option key={author._id} value={author._id}>
-                  {author.name}
-                </option>
-              ))}
-            </select>
-            <button
-              className="btn btn-outline btn-accent btn-sm mb-2"
-              disabled={!canSave}
-            >
-              Send
-            </button>
-          </form>
+            Delete post
+          </button>
         </div>
+        <h2 className="text-lg">Edit the post</h2>
+        <form
+          className="flex flex-col w-4/5 max-w-lg gap-2"
+          onSubmit={handleEdit}
+        >
+          <label htmlFor="title" className="text-lg">
+            Title
+          </label>
+          <input
+            className="p-2 rounded outline-none input input-bordered input-secondary"
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            disabled={isLoading}
+          />
+          <label htmlFor="content" className="text-lg">
+            Content
+          </label>
+          <textarea
+            className="p-2 rounded outline-none input input-bordered input-secondary"
+            id="content"
+            type="text"
+            value={postContent}
+            onChange={(e) => setContent(e.target.value)}
+            disabled={isLoading}
+          ></textarea>
+          <label htmlFor="author" className="text-lg">
+            Author
+          </label>
+          <select
+            className="p-2 rounded outline-none mb-5 input input-bordered input-secondary"
+            value={authorId}
+            onChange={(e) => setAuthorId(e.target.value)}
+            disabled={isLoading}
+          >
+            <option></option>
+            {authors?.map((author) => (
+              <option key={author._id} value={author._id}>
+                {author.name}
+              </option>
+            ))}
+          </select>
+          <button
+            className="btn btn-outline btn-accent btn-sm mb-2"
+            disabled={!canSave}
+          >
+            Send
+          </button>
+        </form>
       </div>
     )
   }
@@ -158,8 +158,8 @@ const Post = () => {
     content = <p>{error?.data?.message || 'An error occurred.'}</p>
   }
 
-  if (authorsError) {
-    return <p>{error?.data?.message || 'An error occurred.'}</p>
+  if (authorsIsError) {
+    return <p>{authorsError?.data?.message || 'An error occurred.'}</p>
   }
 
   return <div>{content}</div>
