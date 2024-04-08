@@ -23,6 +23,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Post'],
     }),
+    addAuthor: builder.mutation({
+      query: (author) => ({
+        url: '/author',
+        method: 'POST',
+        body: author,
+      }),
+      invalidatesTags: ['Author'],
+    }),
   }),
 })
 
@@ -31,4 +39,5 @@ export const {
   useGetAuthorsQuery,
   useGetPostQuery,
   useAddPostMutation,
+  useAddAuthorMutation,
 } = apiSlice

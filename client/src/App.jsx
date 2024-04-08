@@ -3,6 +3,8 @@ import Layout from './components/Layout'
 import Posts from './features/post/Posts'
 import Post from './features/post/Post'
 import AddPost from './features/post/AddPost'
+import Authors from './features/author/Authors'
+import AddAuthor from './features/author/AddAuthor'
 
 const App = () => {
   return (
@@ -14,6 +16,10 @@ const App = () => {
             <Route index element={<Posts />} />
             <Route path=":postId" element={<Post />} />
             <Route path="add-post" element={<AddPost />} />
+          </Route>
+          <Route path="author">
+            <Route index element={<Authors />} />
+            <Route path="add-author" element={<AddAuthor />} />
           </Route>
         </Route>
       </Routes>
