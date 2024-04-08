@@ -10,14 +10,18 @@ const truncateString = (str) => {
 
 const PostExcerpt = ({ post }) => {
   return (
-    <div className="border-2 border-accent p-3 rounded-lg">
+    <div className="border-2 border-accent p-3 rounded-lg flex flex-col justify-between">
       <h2 className="text-xl mb-1">{post.title}</h2>
       <p className="mb-2">{truncateString(post.content)}</p>
       <p className="text-sm mb-3">{post.author.name}</p>
-      <button className="btn btn-outline btn-accent btn-sm">
-        <Link to={`/post/${post._id}`}>View post</Link>
-      </button>
+      <Link
+        to={`/post/${post._id}`}
+        className="btn btn-outline btn-accent btn-sm"
+      >
+        View post
+      </Link>
     </div>
   )
 }
+
 export default PostExcerpt

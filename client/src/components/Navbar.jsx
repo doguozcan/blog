@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   return (
-    <div className="p-5 bg-neutral flex justify-center space-x-10">
+    <div className="p-5 bg-neutral flex justify-center space-x-10 text-primary">
       <Link to="post">Post</Link>
       <Link to="author">Author</Link>
       <Link to="author/add-author">Add Author</Link>

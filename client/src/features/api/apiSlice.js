@@ -31,6 +31,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Author'],
     }),
+    deletePost: builder.mutation({
+      query: (postId) => ({
+        url: `/post/${postId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Post'],
+    }),
   }),
 })
 
@@ -40,4 +47,5 @@ export const {
   useGetPostQuery,
   useAddPostMutation,
   useAddAuthorMutation,
+  useDeletePostMutation,
 } = apiSlice
