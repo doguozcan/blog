@@ -6,9 +6,11 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: () => '/post',
+      providesTags: ['Post'],
     }),
     getAuthors: builder.query({
       query: () => 'author',
+      providesTags: ['Author'],
     }),
     getPost: builder.query({
       query: (postId) => `post/${postId}`,
@@ -19,6 +21,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: post,
       }),
+      invalidatesTags: ['Post'],
     }),
   }),
 })
