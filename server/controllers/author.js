@@ -56,13 +56,7 @@ const getAuthorPosts = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
-  const posts = await Post.find({ authorId: author._id })
-
-  if (posts.length === 0) {
-    let error = new Error('No posts found for this author.')
-    error.statusCode = 404
-    return next(error)
-  }
+  const posts = await Post.find({ author: author._id })
 
   return res.status(200).json({ author, posts })
 })
