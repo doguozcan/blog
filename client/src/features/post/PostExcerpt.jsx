@@ -13,7 +13,9 @@ const PostExcerpt = ({ post }) => {
     <div className="border border-accent p-3 rounded-lg flex flex-col justify-between">
       <h2 className="text-xl mb-1">{post.title}</h2>
       <p className="mb-2">{truncateString(post.content)}</p>
-      <p className="text-sm mb-3">{post.author.name}</p>
+      <Link className="mb-3 text-secondary" to={`/author/${post.author._id}`}>
+        {post.author.name}
+      </Link>
       <Link
         to={`/post/${post._id}`}
         className="btn btn-outline btn-accent btn-sm"

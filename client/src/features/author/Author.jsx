@@ -70,7 +70,7 @@ const Author = () => {
             <PostExcerpt key={post._id} post={post} />
           ))}
         </div>
-        <div>
+        <div className="flex flex-col items-center my-4 gap-2">
           <h2 className="text-lg">Edit the author</h2>
           <form
             className="flex flex-col w-4/5 max-w-lg gap-2"
