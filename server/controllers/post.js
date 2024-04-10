@@ -139,9 +139,10 @@ const updatePost = asyncHandler(async (req, res, next) => {
 
   const updatedPost = await post.save()
 
-  res
-    .status(200)
-    .json({ message: `Post with id ${updatedPost._id} updated successfully!` })
+  res.status(200).json({
+    message: `Post with id ${updatedPost._id} updated successfully!`,
+    updatedPost,
+  })
 })
 
 const deletePost = asyncHandler(async (req, res, next) => {
@@ -167,9 +168,11 @@ const deletePost = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
-  return res
-    .status(200)
-    .json({ message: `Post with id ${deletedPost._id} deleted successfully!` })
+  return res.status(200).json({
+    message: `Post with id ${deletedPost._id} deleted successfully!`,
+    postId: deletedPost._id,
+    authorId: deletedPost.author,
+  })
 })
 
 module.exports = { createPost, getPosts, getPost, updatePost, deletePost }

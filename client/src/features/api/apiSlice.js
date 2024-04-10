@@ -6,11 +6,39 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: () => '/post',
-      providesTags: ['Post', 'Author'],
+      providesTags: (result = [], error, arg) => [
+        { type: 'Post', id: 'LIST' },
+        ...result.map((post) => ({ type: 'Post', id: post._id })),
+      ],
     }),
     getPost: builder.query({
       query: (postId) => `post/${postId}`,
-      providesTags: ['Post', 'Author'],
+      providesTags: (result, error, arg) => [{ type: 'Post', id: arg }],
+    }),
+    getAuthors: builder.query({
+      query: () => '/author',
+      providesTags: (result = [], error, arg) => [
+        { type: 'Author', id: 'LIST' },
+        ...result.map((author) => ({ type: 'Author', id: author._id })),
+      ],
+    }),
+    getAuthor: builder.query({
+      query: (authorId) => `author/${authorId}`,
+      providesTags: (result, error, arg) => {
+        const tags = []
+
+        if (result) {
+          tags.push({ type: 'Author', id: result.author._id })
+
+          if (result.posts.length !== 0) {
+            tags.push(
+              ...result.posts.map((post) => ({ type: 'Post', id: post._id }))
+            )
+          }
+        }
+
+        return tags
+      },
     }),
     addPost: builder.mutation({
       query: (post) => ({
@@ -18,7 +46,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: post,
       }),
-      invalidatesTags: ['Post', 'Author'],
+      invalidatesTags: [{ type: 'Post', id: 'LIST' }],
     }),
     editPost: builder.mutation({
       query: (post) => ({
@@ -26,22 +54,18 @@ export const apiSlice = createApi({
         method: 'PATCH',
         body: post,
       }),
-      invalidatesTags: ['Post', 'Author'],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Post', id: result.updatedPost._id },
+      ],
     }),
     deletePost: builder.mutation({
       query: (postId) => ({
         url: `/post/${postId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Post', 'Author'],
-    }),
-    getAuthors: builder.query({
-      query: () => '/author',
-      providesTags: ['Post', 'Author'],
-    }),
-    getAuthor: builder.query({
-      query: (authorId) => `author/${authorId}`,
-      providesTags: ['Post', 'Author'],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Post', id: result.postId },
+      ],
     }),
     addAuthor: builder.mutation({
       query: (author) => ({
@@ -49,7 +73,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: author,
       }),
-      invalidatesTags: ['Post', 'Author'],
+      invalidatesTags: [{ type: 'Author', id: 'LIST' }],
     }),
     editAuthor: builder.mutation({
       query: (author) => ({
@@ -57,14 +81,29 @@ export const apiSlice = createApi({
         method: 'PATCH',
         body: author,
       }),
-      invalidatesTags: ['Post', 'Author'],
+      invalidatesTags: (result, error, arg) => [
+        ...result.authorsPostsIds.map((postId) => ({
+          type: 'Post',
+          id: postId,
+        })),
+        { type: 'Author', id: result.authorId },
+      ],
     }),
     deleteAuthor: builder.mutation({
       query: (authorId) => ({
         url: `/author/${authorId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Post', 'Author'],
+      invalidatesTags: (result, error, arg) => {
+        console.log(result)
+        return [
+          ...result.authorsPostsIds.map((postId) => ({
+            type: 'Post',
+            id: postId,
+          })),
+          { type: 'Author', id: result.authorId },
+        ]
+      },
     }),
   }),
 })

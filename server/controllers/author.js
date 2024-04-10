@@ -12,6 +12,14 @@ const createAuthor = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
+  const existingAuthor = await Author.findOne({ name })
+
+  if (existingAuthor) {
+    let error = new Error('Author with the same name exists.')
+    error.statusCode = 400
+    return next(error)
+  }
+
   const author = await Author.create({ name })
 
   if (author) {
@@ -92,12 +100,25 @@ const updateAuthor = asyncHandler(async (req, res, next) => {
     next(error)
   }
 
+  const existingAuthor = await Author.findOne({ name })
+
+  if (existingAuthor) {
+    let error = new Error('Author with the same name exists.')
+    error.statusCode = 400
+    return next(error)
+  }
+
   author.name = name
   await author.save()
 
-  return res
-    .status(200)
-    .json({ message: `Author with id ${author._id} updated successfully!` })
+  const authorPosts = await Post.find({ author: author._id })
+  const authorsPostsIds = authorPosts.map((post) => post._id)
+
+  return res.status(200).json({
+    message: `Author with id ${author._id} updated successfully!`,
+    authorId: author._id,
+    authorsPostsIds,
+  })
 })
 
 const deleteAuthor = asyncHandler(async (req, res, next) => {
@@ -123,15 +144,20 @@ const deleteAuthor = asyncHandler(async (req, res, next) => {
     return next(error)
   }
 
+  const authorPosts = await Post.find({ author: author._id })
+  const authorsPostsIds = authorPosts.map((post) => post._id)
+
   // delete posts related with the author
   await Post.deleteMany({ author: author._id })
 
   // delete the author
   await Author.findOneAndDelete({ _id: authorId })
 
-  return res
-    .status(200)
-    .json({ message: 'Author and all related posts are deleted.' })
+  return res.status(200).json({
+    message: 'Author and all related posts are deleted.',
+    authorId: author._id,
+    authorsPostsIds,
+  })
 })
 
 module.exports = {

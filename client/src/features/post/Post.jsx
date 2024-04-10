@@ -68,7 +68,7 @@ const Post = () => {
       const payload = await editPost(postToUpdate).unwrap()
       console.log('Fulfilled', payload.message)
       // Fulfilled Post with id 66139979d85335b9e7f87448 updated successfully!
-      navigate('/')
+      // navigate('/')
     } catch (error) {
       console.error('Rejected', error.data.message)
       // Rejected Post not found.
